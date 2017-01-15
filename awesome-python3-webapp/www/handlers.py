@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re, time, json, logging, hashlib, base64, asyncio
 import markdown2
+from aiohttp import web
 from coroweb import get, post
 from apis import APIValueError, APIResourceNotFoundError
 from models import User, Comment, Blog, next_id
@@ -67,14 +68,6 @@ def index(request):
     }
 
 
-@get('/api/users')
-async def api_get_users():
-    users = await User.findAll(orderBy='created_at desc')
-    for u in users:
-        u.passwd = '******'
-    return dict(users=users)
-
-
 @get('/register')
 def register():
     return {
@@ -115,10 +108,10 @@ def authenticate(*, email, passwd):
     return r
 
 
-@get('/signout'):
+@get('/signout')
 def signout(request):
-    referer = request.headers.get('Referer')
-    r = web.HTTPFound(referer or '/')
+    referer = request.headers.get('Referer')    # 在请求头中表示url来源
+    r = web.HTTPFound(referer or '/')      # 重定向：302
     r.set_cookie(COOKIE_NAME, '-deleted-', max_age=0, httponly=True)
     logging.info('user signed out.')
     return r
