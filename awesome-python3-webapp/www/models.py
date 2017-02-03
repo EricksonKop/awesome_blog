@@ -11,7 +11,7 @@ __author__ = 'Erickson'
 
 
 def next_id():  # 返回一个50位字符的字符串
-    return '%015d%s000' % (int(time.time()*1000), uuid.uuid4().hex)
+    return '%015d%s000' % (int(time.time() * 1000), uuid.uuid4().hex)
 
 
 class User(Model):

@@ -1,6 +1,6 @@
 #!user/bin/env python3
 # -*- coding: utf-8 -*-
-import logging;logging.basicConfig(level=logging.INFO)
+import logging; logging.basicConfig(level=logging.INFO)
 import aiomysql
 import asyncio
 
@@ -145,7 +145,7 @@ class ModelMetaclass(type):
         attrs['__fields__'] = escaped_fields + [primaryKey]  # 所有属性名添加进__fields__属性
         # 构造默认的SELECT, INSERT，UPDATE及DELETE语句
         attrs['__select__'] = 'select * from `%s`' % (tableName)
-        attrs['__insert__'] = 'insert into `%s` (%s) values(%s)' % (tableName, ','.join('%s' % f for f in mappings), ','.join('?'*len(mappings)))
+        attrs['__insert__'] = 'insert into `%s` (%s) values(%s)' % (tableName, ','.join('%s' % f for f in mappings), ','.join('?' * len(mappings)))
         attrs['__update__'] = 'update `%s` set %s where `%s`=?' % (tableName, ','.join('`%s`=?' % f for f in escaped_fields), primaryKey)
         attrs['__delete__'] = 'delete from `%s` where `%s`=?' % (tableName, primaryKey)
         return type.__new__(cls, name, bases, attrs)

@@ -1,9 +1,9 @@
 #!user/bin/env python3
 # -*- coding: utf-8 -*-
-import logging;logging.basicConfig(level=logging.INFO)
+import logging; logging.basicConfig(level=logging.INFO)
 import inspect, asyncio, os, functools
 from aiohttp import web
-from errors import APIError
+from apis import APIError
 
 
 def request(path, *, method):
