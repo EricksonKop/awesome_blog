@@ -1,4 +1,4 @@
-#!user/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import logging; logging.basicConfig(level=logging.INFO)
 import asyncio, os, json, time
@@ -112,6 +112,7 @@ async def response_factory(app, handler):  # 响应报文后处理
                 resp.content_type = 'application/json;charset=utf-8'
                 return resp
             else:
+                r['__user__'] = request.__user__
                 resp = web.Response(body=app['__templating__'].get_template(template).render(**r).encode('utf-8'))
                 resp.content_type = 'text/html;charset=utf-8'
                 return resp
@@ -139,7 +140,7 @@ def datetime_filter(t):
     if delta < 604800:
         return u'%s天前' % (delta // 86400)
     dt = datetime.fromtimestamp(t)
-    return u'%s%年s月%s日' % (dt.year, dt.month, dt.day)
+    return u'%s年%s月%s日' % (dt.year, dt.month, dt.day)
 
 
 async def init(loop):
